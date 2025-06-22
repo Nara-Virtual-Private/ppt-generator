@@ -11,7 +11,7 @@ from api.routers.presentation.models import (
 )
 from api.services.logging import LoggingService
 from api.sql_models import PresentationSqlModel, SlideSqlModel
-from api.utils import download_files, get_presentation_dir, replace_file_name
+from api.utils.utils import download_files, get_presentation_dir, replace_file_name
 from api.services.database import get_sql_session
 from api.services.instances import TEMP_FILE_SERVICE
 

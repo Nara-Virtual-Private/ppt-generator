@@ -8,7 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import BaseMessage
 from langchain_text_splitters import CharacterTextSplitter
 
-from api.utils import get_nano_model
+from api.utils.utils import get_nano_model
 
 sysmte_prompt = """
 Generate a blog-style summary of the provided document in **more than 2000 words**.

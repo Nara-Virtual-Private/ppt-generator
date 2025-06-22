@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from api.utils import get_resource
+from api.utils.utils import get_resource
 from ppt_generator.models.query_and_prompt_models import (
     IconCategoryEnum,
     IconQueryCollectionWithData,

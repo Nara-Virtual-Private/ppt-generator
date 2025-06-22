@@ -9,7 +9,7 @@ from openai import OpenAI
 from ppt_generator.models.query_and_prompt_models import (
     ImagePromptWithThemeAndAspectRatio,
 )
-from api.utils import download_file, get_resource, is_ollama_selected
+from api.utils.utils import download_file, get_resource, is_ollama_selected
 
 
 async def generate_image(

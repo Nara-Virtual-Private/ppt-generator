@@ -1,11 +1,14 @@
 from typing import Optional
-from api.utils import get_large_model, get_small_model
+from api.utils.utils import get_large_model, get_small_model
 from ppt_config_generator.models import SlideMarkdownModel
 from ppt_generator.fix_validation_errors import get_validated_response
 
 from langchain_core.prompts import ChatPromptTemplate
 
-from ppt_generator.models.llm_models import LLMSlideContentModel
+from ppt_generator.models.llm_models import (
+    LLM_CONTENT_TYPE_MAPPING,
+    LLMSlideContentModel,
+)
 from ppt_generator.models.llm_models_with_validations import (
     LLM_CONTENT_TYPE_WITH_VALIDATION_MAPPING,
 )
@@ -32,7 +35,7 @@ prompt_template_to_generate_slide_content = ChatPromptTemplate.from_messages(
             - Rephrase the slide body to make it flow naturally.
             - Do not use markdown formatting in slide body.
             - **Icon query** must be a generic single word noun.
-            - Example of **Image prompt**: deer in forest.
+            - **Image prompt** should be a 2-3 words phrase.
             - Try to make paragraphs as short as possible.
             {notes}
             """,
@@ -124,6 +127,7 @@ async def get_slide_content_from_type_and_outline(
     slide_type: int, outline: SlideMarkdownModel
 ) -> LLMSlideContentModel:
     content_type_model_type = LLM_CONTENT_TYPE_WITH_VALIDATION_MAPPING[slide_type]
+    validation_model = LLM_CONTENT_TYPE_MAPPING[slide_type]
     model = get_small_model().with_structured_output(
         content_type_model_type.model_json_schema()
     )
@@ -137,6 +141,7 @@ async def get_slide_content_from_type_and_outline(
             "notes": content_type_model_type.get_notes(),
         },
         content_type_model_type,
+        validation_model,
     )
 
 
@@ -150,6 +155,7 @@ async def get_edited_slide_content_model(
     model = get_large_model()
 
     content_type_model_type = LLM_CONTENT_TYPE_WITH_VALIDATION_MAPPING[slide_type]
+    validation_model = LLM_CONTENT_TYPE_MAPPING[slide_type]
     chain = prompt_template_to_edit_slide_content | model.with_structured_output(
         content_type_model_type.model_json_schema()
     )
@@ -164,6 +170,7 @@ async def get_edited_slide_content_model(
             "notes": "",
         },
         content_type_model_type,
+        validation_model,
     )
 
     return edited_content.to_content()

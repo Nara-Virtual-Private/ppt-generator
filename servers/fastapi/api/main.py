@@ -1,17 +1,14 @@
 import os
-import time
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import ollama
 from sqlmodel import SQLModel
 from contextlib import asynccontextmanager
 
-from api.routers.presentation.handlers.list_supported_ollama_models import (
-    SUPPORTED_OLLAMA_MODELS,
-)
 from api.routers.presentation.router import presentation_router
 from api.services.database import sql_engine
-from api.utils import is_ollama_selected, update_env_with_user_config
+from api.utils.supported_ollama_models import SUPPORTED_OLLAMA_MODELS
+from api.utils.utils import is_ollama_selected, update_env_with_user_config
 
 can_change_keys = os.getenv("CAN_CHANGE_KEYS") != "false"
 

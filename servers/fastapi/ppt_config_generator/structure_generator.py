@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 
-from api.utils import get_small_model
+from api.utils.utils import get_small_model
 from ppt_config_generator.models import (
     PresentationStructureModel,
     PresentationMarkdownModel,

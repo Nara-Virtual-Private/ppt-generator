@@ -4,6 +4,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     ports:  
       # You can replace 5000 with any other port number of your choice to run Presenton on a different port number.
       - "5000:80"
@@ -21,6 +28,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     ports:
       - "5000:80" 
       - "3000:3000"
@@ -35,6 +49,6 @@ services:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - OLLAMA_MODEL=${OLLAMA_MODEL}
       - PEXELS_API_KEY=${PEXELS_API_KEY}
-      - LANGSMITH_TRACING=${LANGSMITH_TRACING}
-      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
-      - LANGSMITH_PROJECT_ID=${LANGSMITH_PROJECT_ID}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT}

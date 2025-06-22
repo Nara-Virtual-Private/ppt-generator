@@ -19,6 +19,8 @@ interface ModelOption {
     value: string;
     label: string;
     description?: string;
+    icon?: string;
+    size: string;
 }
 
 interface ProviderConfig {
@@ -39,6 +41,8 @@ const PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
                 value: "gpt-4",
                 label: "GPT-4",
                 description: "Most capable model, best for complex tasks",
+                icon: "/icons/openai.png",
+                size: "8GB",
             },
         ],
         imageModels: [
@@ -46,6 +50,8 @@ const PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
                 value: "dall-e-3",
                 label: "DALL-E 3",
                 description: "Latest version with highest quality",
+                icon: "/icons/dall-e.png",
+                size: "8GB",
             },
         ],
         apiGuide: {
@@ -67,6 +73,8 @@ const PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
                 value: "gemini-pro",
                 label: "Gemini Pro",
                 description: "Balanced model for most tasks",
+                icon: "/icons/google.png",
+                size: "8GB",
             },
         ],
         imageModels: [
@@ -74,6 +82,8 @@ const PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
                 value: "imagen",
                 label: "Imagen",
                 description: "Google's primary image generation model",
+                icon: "/icons/google.png",
+                size: "8GB",
             },
         ],
         apiGuide: {
@@ -95,21 +105,29 @@ const PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
                 value: "llama3.1:8b",
                 label: "Llama3.1:8b",
                 description: "Balanced model for most tasks",
+                icon: "/icons/ollama.png",
+                size: "8GB",
             },
             {
                 value: "llama3.1:70b",
                 label: "Llama3.1:70b",
                 description: "Large model for complex tasks",
+                icon: "/icons/ollama.png",
+                size: "70GB",
             },
             {
                 value: "llama3.1:14b",
                 label: "Llama3.1:14b",
                 description: "Large model for complex tasks",
+                icon: "/icons/ollama.png",
+                size: "14GB",
             },
             {
                 value: "llama3.1:11b",
                 label: "Llama3.1:11b",
                 description: "Large model for complex tasks",
+                icon: "/icons/ollama.png",
+                size: "11GB",
             },
         ],
         imageModels: [
@@ -117,6 +135,8 @@ const PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
                 value: "pexels",
                 label: "Pexels",
                 description: "Pexels is a free stock photo and video platform that allows you to download high-quality images and videos for free.",
+                icon: "/icons/pexels.png",
+                size: "8GB",
             },
         ],
         apiGuide: {
@@ -141,7 +161,7 @@ export default function Home() {
         value: string;
         description: string;
         size: string;
-
+        icon: string;
     }[]>([]);
     const [downloadingModel, setDownloadingModel] = useState({
         name: '',
@@ -151,8 +171,6 @@ export default function Home() {
         done: false,
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
-
 
     const canChangeKeys = config.can_change_keys;
 
@@ -218,7 +236,6 @@ export default function Home() {
                 try {
                     const response = await fetch(`/api/v1/ppt/ollama/pull-model?name=${llmConfig.OLLAMA_MODEL}`);
                     if (response.status === 200) {
-
                         const data = await response.json();
 
                         if (data.done) {
@@ -233,13 +250,11 @@ export default function Home() {
                         reject(new Error('Model pulling failed'));
                     }
                 } catch (error) {
-
                     console.log('Error fetching ollama models:', error);
                     clearInterval(interval);
                     reject(error);
                 }
             }, 1000);
-
         });
     }
 
@@ -252,8 +267,6 @@ export default function Home() {
             console.error('Error fetching ollama models:', error);
         }
     }
-
-
 
     useEffect(() => {
         if (!canChangeKeys) {
@@ -337,25 +350,92 @@ export default function Home() {
                     {
                         llmConfig.LLM === 'ollama' && (<div>
                             <div className="mb-8">
-
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-3">
                                     Choose a supported model
                                 </label>
                                 <div className="w-full">
-                                    {ollamaModels.length > 0 ? <Select value={llmConfig.OLLAMA_MODEL} onValueChange={(value) => setLlmConfig({ ...llmConfig, OLLAMA_MODEL: value })}>
-                                        <SelectTrigger className="w-full px-4 py-6 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors">
-                                            {llmConfig.OLLAMA_MODEL || 'Select a model'}
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {ollamaModels.map((model, index) => (
-                                                <SelectItem key={index} value={model.value} className="capitalize mt-1">
-                                                    <span className="text-base font-medium">{model.label}  ({model.size})</span>
-                                                    <span className="text-sm text-gray-500 block mt-1">{model.description}</span>
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select> : <div className="w-full h-10 bg-gray-200 rounded-lg"></div>}
+                                    {ollamaModels.length > 0 ? (
+                                        <Select value={llmConfig.OLLAMA_MODEL} onValueChange={(value) => setLlmConfig({ ...llmConfig, OLLAMA_MODEL: value })}>
+                                            <SelectTrigger className="w-full h-12 px-4 py-4 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors hover:border-gray-400">
+                                                <div className="flex items-center justify-between w-full">
+                                                    <div className="flex gap-3 items-center">
+                                                        <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                            <img
+                                                                src={ollamaModels.find(m => m.value === llmConfig.OLLAMA_MODEL)?.icon}
+                                                                alt={`${llmConfig.OLLAMA_MODEL} icon`}
+                                                                className="rounded-sm"
+                                                            />
+                                                        </div>
+                                                        <span className="text-sm font-medium text-gray-900">
+                                                            {llmConfig.OLLAMA_MODEL ? (
+                                                                ollamaModels.find(m => m.value === llmConfig.OLLAMA_MODEL)?.label || llmConfig.OLLAMA_MODEL
+                                                            ) : (
+                                                                'Select a model'
+                                                            )}
+                                                        </span>
+                                                        {llmConfig.OLLAMA_MODEL && (
+                                                            <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-1">
+                                                                {ollamaModels.find(m => m.value === llmConfig.OLLAMA_MODEL)?.size}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </SelectTrigger>
+                                            <SelectContent className="max-h-80">
+                                                <div className="p-2">
+                                                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 pt-3 px-2">
+                                                        Available Models
+                                                    </div>
+                                                    {ollamaModels.map((model, index) => (
+                                                        <SelectItem
+                                                            key={index}
+                                                            value={model.value}
+                                                            className="relative cursor-pointer rounded-md py-3 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
+                                                        >
+                                                            <div className="flex gap-3 items-center">
+                                                                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                                    <img
+                                                                        src={model.icon}
+                                                                        alt={`${model.label} icon`}
+                                                                        className=" rounded-sm"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex flex-col space-y-1 flex-1">
+                                                                    <div className="flex items-center justify-between gap-2">
+                                                                        <span className="text-sm font-medium text-gray-900 capitalize">
+                                                                            {model.label}
+                                                                        </span>
+                                                                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                                                                            {model.size}
+                                                                        </span>
+                                                                    </div>
+                                                                    <span className="text-xs text-gray-600 leading-relaxed">
+                                                                        {model.description}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))}
+                                                </div>
+                                            </SelectContent>
+                                        </Select>
+                                    ) : (
+                                        <div className="w-full border border-gray-300 rounded-lg p-4">
+                                            <div className="flex items-center space-x-3">
+                                                <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse"></div>
+                                                <div className="flex-1 space-y-2">
+                                                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                                                    <div className="h-3 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
+                                {ollamaModels.length === 0 && (
+                                    <p className="mt-2 text-sm text-gray-500">
+                                        Loading available models...
+                                    </p>
+                                )}
                             </div>
                             <div className="mb-8">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -371,6 +451,10 @@ export default function Home() {
                                         onChange={(e) => api_key_changed(e.target.value)}
                                     />
                                 </div>
+                                <p className="mt-2 text-sm text-gray-500 flex items-center gap-2">
+                                    <span className="block w-1 h-1 rounded-full bg-gray-400"></span>
+                                    Required for generating presentation images
+                                </p>
                             </div>
                         </div>)
                     }
@@ -442,8 +526,6 @@ export default function Home() {
                         </AccordionItem>
                     </Accordion>
 
-
-
                     {/* Save Button */}
                     <button
                         onClick={handleSaveConfig}
@@ -470,7 +552,7 @@ export default function Home() {
 
                     {
                         llmConfig.LLM === 'ollama' && downloadingModel.status && downloadingModel.status !== 'pulled' && (
-                            <div className="mt-3 text-sm text-center text-gray-600">
+                            <div className="mt-3 text-sm bg-green-100 rounded-lg p-2 font-semibold capitalize text-center text-gray-600">
                                 {downloadingModel.status}
                             </div>
                         )

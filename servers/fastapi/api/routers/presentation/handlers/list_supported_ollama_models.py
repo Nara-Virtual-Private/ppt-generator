@@ -1,38 +1,7 @@
 from api.models import LogMetadata, OllamaModelMetadata
 from api.routers.presentation.models import OllamaSupportedModelsResponse
 from api.services.logging import LoggingService
-
-
-SUPPORTED_OLLAMA_MODELS = {
-    "llama3.2:3b": OllamaModelMetadata(
-        label="Llama 3.2:3b",
-        value="llama3.2:3b",
-        description="❌ Graphs not supported.",
-        size="2GB",
-        supports_graph=False,
-    ),
-    "llama3.1:8b": OllamaModelMetadata(
-        label="Llama 3.1:8b",
-        value="llama3.1:8b",
-        description="❌ Graphs not supported.",
-        size="4.9GB",
-        supports_graph=False,
-    ),
-    "llama3.1:70b": OllamaModelMetadata(
-        label="Llama 3.1:70b",
-        value="llama3.1:70b",
-        description="✅ Graphs supported.",
-        size="43GB",
-        supports_graph=True,
-    ),
-    "llama3.1:405b": OllamaModelMetadata(
-        label="Llama 3.1:405b",
-        value="llama3.1:405b",
-        description="✅ Graphs supported.",
-        size="243GB",
-        supports_graph=True,
-    ),
-}
+from api.utils.supported_ollama_models import SUPPORTED_OLLAMA_MODELS
 
 
 class ListSupportedOllamaModelsHandler:

@@ -1,7 +1,7 @@
 from typing import Optional
 from langchain_core.prompts import ChatPromptTemplate
 
-from api.utils import get_large_model
+from api.utils.utils import get_large_model
 from ppt_config_generator.models import PresentationMarkdownModel
 from ppt_generator.fix_validation_errors import get_validated_response
 

@@ -1,6 +1,6 @@
 import asyncio
 import json
-from api.utils import download_file
+from api.utils.utils import download_file
 from image_processor.images_finder import get_image_from_pexels
 from ppt_config_generator.structure_generator import generate_presentation_structure
 from ppt_config_generator.models import (

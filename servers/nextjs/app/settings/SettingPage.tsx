@@ -45,6 +45,7 @@ const SettingsPage = () => {
         value: string;
         description: string;
         size: string;
+        icon: string;
     }[]>([]);
     const [downloadingModel, setDownloadingModel] = useState({
         name: '',
@@ -262,22 +263,86 @@ const SettingsPage = () => {
                                     <div className="w-full">
                                         {ollamaModels.length > 0 ? (
                                             <Select value={llmConfig.OLLAMA_MODEL} onValueChange={(value) => setLlmConfig({ ...llmConfig, OLLAMA_MODEL: value })}>
-                                                <SelectTrigger className="w-full px-4 py-6 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors">
-                                                    {llmConfig.OLLAMA_MODEL || 'Select a model'}
+                                                <SelectTrigger className="w-full h-12 px-4 py-4 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors hover:border-gray-400">
+                                                    <div className="flex items-center justify-between w-full">
+                                                        <div className="flex gap-3 items-center">
+                                                            <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                                <img
+                                                                    src={ollamaModels.find(m => m.value === llmConfig.OLLAMA_MODEL)?.icon}
+                                                                    alt={`${llmConfig.OLLAMA_MODEL} icon`}
+                                                                    className="rounded-sm"
+                                                                />
+                                                            </div>
+                                                            <span className="text-sm font-medium text-gray-900">
+                                                                {llmConfig.OLLAMA_MODEL ? (
+                                                                    ollamaModels.find(m => m.value === llmConfig.OLLAMA_MODEL)?.label || llmConfig.OLLAMA_MODEL
+                                                                ) : (
+                                                                    'Select a model'
+                                                                )}
+                                                            </span>
+                                                            {llmConfig.OLLAMA_MODEL && (
+                                                                <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-1">
+                                                                    {ollamaModels.find(m => m.value === llmConfig.OLLAMA_MODEL)?.size}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    {ollamaModels.map((model, index) => (
-                                                        <SelectItem key={index} value={model.value} className="capitalize mt-1">
-                                                            <span className="text-base font-medium">{model.label}  ({model.size})</span>
-                                                            <span className="text-sm text-gray-500 block mt-1">{model.description}</span>
-                                                        </SelectItem>
-                                                    ))}
+                                                <SelectContent className="max-h-80">
+                                                    <div className="p-2">
+                                                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 pt-3 px-2">
+                                                            Available Models
+                                                        </div>
+                                                        {ollamaModels.map((model, index) => (
+                                                            <SelectItem
+                                                                key={index}
+                                                                value={model.value}
+                                                                className="relative cursor-pointer rounded-md py-3 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
+                                                            >
+                                                                <div className="flex gap-3 items-center">
+                                                                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                                        <img
+                                                                            src={model.icon}
+                                                                            alt={`${model.label} icon`}
+                                                                            className=" rounded-sm"
+                                                                        />
+                                                                    </div>
+                                                                    <div className="flex flex-col space-y-1 flex-1">
+                                                                        <div className="flex items-center justify-between gap-2">
+                                                                            <span className="text-sm font-medium text-gray-900 capitalize">
+                                                                                {model.label}
+                                                                            </span>
+                                                                            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                                                                                {model.size}
+                                                                            </span>
+                                                                        </div>
+                                                                        <span className="text-xs text-gray-600 leading-relaxed">
+                                                                            {model.description}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </SelectItem>
+                                                        ))}
+                                                    </div>
                                                 </SelectContent>
                                             </Select>
                                         ) : (
-                                            <div className="w-full h-10 bg-gray-200 rounded-lg"></div>
+                                            <div className="w-full border border-gray-300 rounded-lg p-4">
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse"></div>
+                                                    <div className="flex-1 space-y-2">
+                                                        <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                                                        <div className="h-3 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         )}
                                     </div>
+                                    {ollamaModels.length === 0 && (
+                                        <p className="mt-2 text-sm text-gray-500">
+                                            Loading available models...
+                                        </p>
+                                    )}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -316,7 +381,7 @@ const SettingsPage = () => {
                                     <p className="mt-2 text-sm text-gray-500">Required for using Ollama services with image generation</p>
                                 </div>
                                 {downloadingModel.status && downloadingModel.status !== 'pulled' && (
-                                    <div className="text-sm text-center text-gray-600">
+                                    <div className="text-sm text-center bg-green-100 rounded-lg p-2 font-semibold capitalize text-gray-600">
                                         {downloadingModel.status}
                                     </div>
                                 )}

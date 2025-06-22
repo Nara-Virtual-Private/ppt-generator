@@ -17,7 +17,7 @@ from api.routers.presentation.models import (
 from api.services.database import get_sql_session
 from api.services.logging import LoggingService
 from api.sql_models import KeyValueSqlModel, PresentationSqlModel, SlideSqlModel
-from api.utils import get_presentation_dir, is_ollama_selected
+from api.utils.utils import get_presentation_dir, is_ollama_selected
 from ppt_config_generator.models import (
     PresentationMarkdownModel,
     PresentationStructureModel,

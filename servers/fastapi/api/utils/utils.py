@@ -28,7 +28,7 @@ def get_large_model():
     elif selected_llm == "google":
         return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     else:
-        return ChatOllama(model=os.getenv("OLLAMA_MODEL"))
+        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.6)
 
 
 def get_small_model():
@@ -38,7 +38,7 @@ def get_small_model():
     elif selected_llm == "google":
         return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     else:
-        return ChatOllama(model=os.getenv("OLLAMA_MODEL"))
+        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.6)
 
 
 def get_nano_model():
@@ -48,7 +48,7 @@ def get_nano_model():
     elif selected_llm == "google":
         return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     else:
-        return ChatOllama(model=os.getenv("OLLAMA_MODEL"))
+        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.6)
 
 
 def get_presentation_dir(presentation_id: str) -> str:
@@ -102,7 +102,9 @@ def update_env_with_user_config():
 
 def get_resource(relative_path):
     base_path = getattr(
-        sys, "_MEIPASS", os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        sys,
+        "_MEIPASS",
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
     )
     return os.path.join(base_path, relative_path)
 

@@ -81,7 +81,7 @@ from api.routers.presentation.models import (
     PresentationUpdateRequest,
 )
 from api.sql_models import PresentationSqlModel
-from api.utils import handle_errors
+from api.utils.utils import handle_errors
 from ppt_generator.models.slide_model import SlideModel
 
 route_prefix = "/api/v1/ppt"

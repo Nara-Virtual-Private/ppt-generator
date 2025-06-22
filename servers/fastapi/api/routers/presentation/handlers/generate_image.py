@@ -7,7 +7,7 @@ from api.routers.presentation.models import (
 )
 from api.services.logging import LoggingService
 from api.services.instances import TEMP_FILE_SERVICE
-from api.utils import get_presentation_dir, get_presentation_images_dir
+from api.utils.utils import get_presentation_dir, get_presentation_images_dir
 from image_processor.images_finder import generate_image
 
 

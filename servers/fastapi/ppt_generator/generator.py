@@ -5,7 +5,7 @@ from langchain_core.messages import (
     AIMessageChunk,
     AIMessage,
 )
-from api.utils import get_large_model
+from api.utils.utils import get_large_model
 from ppt_config_generator.models import PresentationMarkdownModel
 from ppt_generator.models.llm_models_with_validations import (
     LLMPresentationModelWithValidation,

@@ -11,7 +11,7 @@ from api.routers.presentation.models import (
 from api.services.logging import LoggingService
 from api.services.instances import TEMP_FILE_SERVICE
 from api.sql_models import PresentationSqlModel
-from api.utils import get_presentation_dir, sanitize_filename
+from api.utils.utils import get_presentation_dir, sanitize_filename
 from ppt_generator.pptx_presentation_creator import PptxPresentationCreator
 from api.services.database import get_sql_session
 
