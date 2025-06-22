@@ -28,7 +28,7 @@ def get_large_model():
     elif selected_llm == "google":
         return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     else:
-        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.6)
+        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.8)
 
 
 def get_small_model():
@@ -38,7 +38,7 @@ def get_small_model():
     elif selected_llm == "google":
         return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     else:
-        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.6)
+        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.8)
 
 
 def get_nano_model():
@@ -48,7 +48,7 @@ def get_nano_model():
     elif selected_llm == "google":
         return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     else:
-        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.6)
+        return ChatOllama(model=os.getenv("OLLAMA_MODEL"), temperature=0.8)
 
 
 def get_presentation_dir(presentation_id: str) -> str:

@@ -59,14 +59,72 @@ docker run -it --name presenton -p 5000:80 -e LLM="openai" -e OPENAI_API_KEY="**
 docker run -it --name presenton -p 5000:80 -e LLM="ollama" -e OLLAMA_MODEL="llama3.2:3b" -e PEXELS_API_KEY="*******" -e CAN_CHANGE_KEYS="false" -v "./user_data:/app/user_data" ghcr.io/presenton/presenton:latest
 ```
 
+##### Running Presenton with GPU Support
+
+To use GPU acceleration with Ollama models, you need to install and configure the NVIDIA Container Toolkit. This allows Docker containers to access your NVIDIA GPU.
+
+#### Prerequisites
+
+1. **NVIDIA GPU Driver**: Ensure you have the NVIDIA GPU driver installed on your system. You can install it using your distribution's package manager or download from [NVIDIA Driver Downloads](https://www.nvidia.com/Download/index.aspx).
+
+2. **Docker**: Make sure Docker is installed and running on your system.
+
+
+Once the NVIDIA Container Toolkit is installed and configured, you can run Presenton with GPU support by adding the `--gpus=all` flag:
+
+```bash
+docker run -it --name presenton --gpus=all -p 5000:80 -e LLM="ollama" -e OLLAMA_MODEL="llama3.2:3b" -e PEXELS_API_KEY="*******" -e CAN_CHANGE_KEYS="false" -v "./user_data:/app/user_data" ghcr.io/presenton/presenton:latest
+```
+
+> **Note:** GPU acceleration significantly improves the performance of Ollama models, especially for larger models. Make sure you have sufficient GPU memory for your chosen model.
+
+
 ##### Supported Ollama Models:
 
+**Llama Models:**
 | Model | Size | Graph Support |
 |-------|------|---------------|
-| `llama3.2:3b` | 2GB | ❌ No |
+| `llama3:8b` | 4.7GB | ❌ No |
+| `llama3:70b` | 40GB | ✅ Yes |
 | `llama3.1:8b` | 4.9GB | ❌ No |
 | `llama3.1:70b` | 43GB | ✅ Yes |
 | `llama3.1:405b` | 243GB | ✅ Yes |
+| `llama3.2:1b` | 1.3GB | ❌ No |
+| `llama3.2:3b` | 2GB | ❌ No |
+| `llama3.3:70b` | 43GB | ✅ Yes |
+| `llama4:16x17b` | 67GB | ✅ Yes |
+| `llama4:128x17b` | 245GB | ✅ Yes |
+
+**Gemma Models:**
+| Model | Size | Graph Support |
+|-------|------|---------------|
+| `gemma3:1b` | 815MB | ❌ No |
+| `gemma3:4b` | 3.3GB | ❌ No |
+| `gemma3:12b` | 8.1GB | ❌ No |
+| `gemma3:27b` | 17GB | ✅ Yes |
+
+**DeepSeek Models:**
+| Model | Size | Graph Support |
+|-------|------|---------------|
+| `deepseek-r1:1.5b` | 1.1GB | ❌ No |
+| `deepseek-r1:7b` | 4.7GB | ❌ No |
+| `deepseek-r1:8b` | 5.2GB | ❌ No |
+| `deepseek-r1:14b` | 9GB | ❌ No |
+| `deepseek-r1:32b` | 20GB | ✅ Yes |
+| `deepseek-r1:70b` | 43GB | ✅ Yes |
+| `deepseek-r1:671b` | 404GB | ✅ Yes |
+
+**Qwen Models:**
+| Model | Size | Graph Support |
+|-------|------|---------------|
+| `qwen3:0.6b` | 523MB | ❌ No |
+| `qwen3:1.7b` | 1.4GB | ❌ No |
+| `qwen3:4b` | 2.6GB | ❌ No |
+| `qwen3:8b` | 5.2GB | ❌ No |
+| `qwen3:14b` | 9.3GB | ❌ No |
+| `qwen3:30b` | 19GB | ✅ Yes |
+| `qwen3:32b` | 20GB | ✅ Yes |
+| `qwen3:235b` | 142GB | ✅ Yes |
 
 > **Note:** Models with graph support can generate charts and diagrams in presentations. Larger models provide better quality but require more system resources.
 

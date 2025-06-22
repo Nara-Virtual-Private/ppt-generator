@@ -2,6 +2,9 @@ from typing import Optional
 from langchain_core.prompts import ChatPromptTemplate
 
 from api.utils.utils import get_large_model
+from api.utils.variable_length_models import (
+    get_presentation_markdown_model_with_n_slides,
+)
 from ppt_config_generator.models import PresentationMarkdownModel
 from ppt_generator.fix_validation_errors import get_validated_response
 
@@ -62,12 +65,13 @@ async def generate_ppt_content(
     content: Optional[str] = None,
 ) -> PresentationMarkdownModel:
     model = get_large_model()
+    response_model = get_presentation_markdown_model_with_n_slides(n_slides)
 
     chain = get_prompt_template() | model.with_structured_output(
-        PresentationMarkdownModel.model_json_schema()
+        response_model.model_json_schema()
     )
 
-    response = await get_validated_response(
+    return await get_validated_response(
         chain,
         {
             "prompt": prompt,
@@ -75,6 +79,6 @@ async def generate_ppt_content(
             "language": language or "English",
             "content": content,
         },
+        response_model,
         PresentationMarkdownModel,
     )
-    return response

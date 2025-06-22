@@ -1,10 +1,14 @@
 from langchain_core.prompts import ChatPromptTemplate
 
 from api.utils.utils import get_small_model
+from api.utils.variable_length_models import (
+    get_presentation_structure_model_with_n_slides,
+)
 from ppt_config_generator.models import (
     PresentationStructureModel,
     PresentationMarkdownModel,
 )
+from ppt_generator.fix_validation_errors import get_validated_response
 
 prompt = ChatPromptTemplate.from_messages(
     [
@@ -55,12 +59,18 @@ async def generate_presentation_structure(
     presentation_outline: PresentationMarkdownModel,
 ) -> PresentationStructureModel:
 
-    model = get_small_model().with_structured_output(PresentationStructureModel)
-    chain = prompt | model
+    model = get_small_model()
+    response_model = get_presentation_structure_model_with_n_slides(
+        len(presentation_outline.slides)
+    )
+    chain = prompt | model.with_structured_output(response_model.model_json_schema())
 
-    return await chain.ainvoke(
+    return await get_validated_response(
+        chain,
         {
             "n_slides": len(presentation_outline.slides),
             "data": presentation_outline.to_string(),
-        }
+        },
+        response_model,
+        PresentationStructureModel,
     )
