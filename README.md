@@ -43,13 +43,33 @@ Open http://localhost:5000 on browser of your choice to use Presenton.
 You may want to directly provide your API KEYS as environment variables and keep them hidden. You can set these environment variables to achieve it.
 
 - **CAN_CHANGE_KEYS=[true/false]**: Set this to **false** if you want to keep API Keys hidden and make them unmodifiable.
-- **LLM=[openai/google]**: Select **LLM** of your choice.
-- **OPENAI_API_KEY=[Your OpenAI API key]**: Provide this if **LLM** is set to **openai**
+- **LLM=[openai/google/ollama]**: Select **LLM** of your choice.
+- **OPENAI_API_KEY=[Your OpenAI API Key]**: Provide this if **LLM** is set to **openai**
 - **GOOGLE_API_KEY=[Your Google API Key]**: Provide this if **LLM** is set to **google**
+- **OLLAMA_MODEL=[Ollama Model Name]**: Provide this if **LLM** is set to **ollama**
+- **PEXELS_API_KEY=[Your Pexels API Key]**: Provide this if **LLM** is set to **ollama**
 
+#### Using Openai
 ```bash
 docker run -it --name presenton -p 5000:80 -e LLM="openai" -e OPENAI_API_KEY="******" -e CAN_CHANGE_KEYS="false" -v "./user_data:/app/user_data" ghcr.io/presenton/presenton:latest
 ```
+
+#### Using Ollama
+```bash
+docker run -it --name presenton -p 5000:80 -e LLM="ollama" -e OLLAMA_MODEL="llama3.2:3b" -e PEXELS_API_KEY="*******" -e CAN_CHANGE_KEYS="false" -v "./user_data:/app/user_data" ghcr.io/presenton/presenton:latest
+```
+
+##### Supported Ollama Models:
+
+| Model | Size | Graph Support |
+|-------|------|---------------|
+| `llama3.2:3b` | 2GB | ❌ No |
+| `llama3.1:8b` | 4.9GB | ❌ No |
+| `llama3.1:70b` | 43GB | ✅ Yes |
+| `llama3.1:405b` | 243GB | ✅ Yes |
+
+> **Note:** Models with graph support can generate charts and diagrams in presentations. Larger models provide better quality but require more system resources.
+
 
 ## Using Presenton API
 
