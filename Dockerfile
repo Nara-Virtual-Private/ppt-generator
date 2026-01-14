@@ -43,8 +43,8 @@ COPY start.js LICENSE NOTICE ./
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose the port
+# Expose the port (informative only, the actual port is set at runtime via $PORT)
 EXPOSE 80
 
 # Start the servers
-CMD ["/bin/bash", "-c", "service nginx start && service redis-server start && node /app/start.js"]
+CMD ["/bin/bash", "-c", "sed -i \"s/listen 80;/listen ${PORT:-80};/\" /etc/nginx/nginx.conf && service nginx start && service redis-server start && node /app/start.js"]
