@@ -11,6 +11,8 @@ services:
       - ./user_data:/app/user_data
     environment:
       - PORT=${PORT:-80}
+      - NEXTJS_PORT=${NEXTJS_PORT:-31211}
+      - FASTAPI_PORT=${FASTAPI_PORT:-80321}
       - CAN_CHANGE_KEYS=${CAN_CHANGE_KEYS}
       - LLM=${LLM}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -24,12 +26,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${PORT:-5000}:${PORT:-80}"
-      - "3000:3000"
-      - "8000:8000"
+      - "${NEXTJS_PORT:-31211}:${NEXTJS_PORT:-31211}"
+      - "${FASTAPI_PORT:-80321}:${FASTAPI_PORT:-80321}"
     volumes:
       - .:/app
     environment:
       - PORT=${PORT:-80}
+      - NEXTJS_PORT=${NEXTJS_PORT:-31211}
+      - FASTAPI_PORT=${FASTAPI_PORT:-80321}
       - NODE_ENV=development
       - CAN_CHANGE_KEYS=${CAN_CHANGE_KEYS}
       - LLM=${LLM}

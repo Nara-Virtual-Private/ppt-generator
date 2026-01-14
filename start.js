@@ -8,8 +8,8 @@ const nextjsDir = path.join(__dirname, 'servers/nextjs');
 const isDev = process.env.NODE_ENV === 'development';
 const canChangeKeys = process.env.CAN_CHANGE_KEYS !== 'false';
 
-const fastapiPort = 8000;
-const nextjsPort = 3000;
+const fastapiPort = process.env.FASTAPI_PORT || 80321;
+const nextjsPort = process.env.NEXTJS_PORT || 31211;
 
 const userConfigPath = path.join(process.env.APP_DATA_DIRECTORY, 'userConfig.json');
 const userDataDir = path.dirname(userConfigPath);
