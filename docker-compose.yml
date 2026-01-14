@@ -30,6 +30,7 @@ services:
       - "${FASTAPI_PORT:-50321}:${FASTAPI_PORT:-50321}"
     volumes:
       - .:/app
+      - /app/servers/nextjs/node_modules
     environment:
       - PORT=${PORT:-80}
       - NEXTJS_PORT=${NEXTJS_PORT:-31211}
